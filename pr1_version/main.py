@@ -32,11 +32,15 @@ def calculate_team_readiness(team: dict) -> tuple[int, str]:
         for student in team["students"].values()
     )
 
-    if students_count >= 3 and assigned_roles == students_count:
-        return 100, "Команда готова к работе"
-    if students_count > 0:
-        return int(assigned_roles / students_count * 100), "Нужно назначить роли"
-    return 0, "Команда пока пуста"
+    if students_count == 0:
+        return 0, "Команда пока пуста"
+
+    readiness = int(assigned_roles / max(students_count, 3) * 100)
+    if students_count < 3:
+        return readiness, "Нужно не менее 3 участников"
+    if assigned_roles < students_count:
+        return readiness, "Нужно назначить роли"
+    return readiness, "Команда готова к работе"
 
 
 def main() -> None:

@@ -1,0 +1,9 @@
+{% if team.readiness_percent == 100 %}
+    <span class="badge bg-success readiness-badge readiness-ready">
+        {{ team.readiness_percent }}% — {{ team.readiness_message }}
+    </span>
+{% else %}
+    <span class="badge bg-warning readiness-badge readiness-incomplete">
+        {{ team.readiness_percent }}% — {{ team.readiness_message }}
+    </span>
+{% endif %}

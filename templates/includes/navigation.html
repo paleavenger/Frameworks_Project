@@ -1,0 +1,12 @@
+{% with section=request.resolver_match.namespace %}
+<nav class="nav border-bottom mb-4 site-nav">
+    <a class="nav-link{% if section == 'homepage' %} active{% endif %}"
+       href="{% url 'homepage:index' %}">Главная</a>
+    <a class="nav-link{% if section == 'students' %} active{% endif %}"
+       href="{% url 'students:list' %}">Студенты</a>
+    <a class="nav-link{% if section == 'teams' %} active{% endif %}"
+       href="{% url 'teams:list' %}">Команды</a>
+    <a class="nav-link{% if section == 'projects' %} active{% endif %}"
+       href="{% url 'projects:list' %}">Проекты</a>
+</nav>
+{% endwith %}

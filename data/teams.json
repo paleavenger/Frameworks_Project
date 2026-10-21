@@ -1,19 +1,36 @@
-{
-  "Команда Альфа": {
-    "project": "Электронный журнал посещаемости",
-    "students": {
-      "Анна": {
-        "specialty": "аналитика",
-        "role": "аналитик"
+[
+  {
+    "id": 1,
+    "name": "Команда Альфа",
+    "project_id": 1,
+    "members": [
+      {
+        "student_id": 1,
+        "role_id": 1
       },
-      "Борис": {
-        "specialty": "разработка",
-        "role": "разработчик"
+      {
+        "student_id": 2,
+        "role_id": 2
       },
-      "Вера": {
-        "specialty": "тестирование",
-        "role": "тестировщик"
+      {
+        "student_id": 3,
+        "role_id": 4
       }
-    }
+    ]
+  },
+  {
+    "id": 2,
+    "name": "Бублики",
+    "project_id": 2,
+    "members": [
+      {
+        "student_id": 4,
+        "role_id": null
+      },
+      {
+        "student_id": 5,
+        "role_id": null
+      }
+    ]
   }
-}
+]

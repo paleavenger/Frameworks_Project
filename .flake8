@@ -1,0 +1,4 @@
+[flake8]
+exclude = .venv,.git,__pycache__,.idea
+per-file-ignores =
+    teamproject/settings.py:E501

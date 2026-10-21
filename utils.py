@@ -1,6 +1,11 @@
 """Вспомогательные функции консольного интерфейса."""
 
 
+def same_name(first: str, second: str) -> bool:
+    """Сравнивает имена без учёта регистра и крайних пробелов."""
+    return first.strip().casefold() == second.strip().casefold()
+
+
 def input_int(prompt: str, minimum: int, maximum: int) -> int:
     """Запрашивает целое число в заданном диапазоне."""
     while True:

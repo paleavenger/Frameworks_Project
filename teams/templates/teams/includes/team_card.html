@@ -1,0 +1,17 @@
+<article class="card team-card mb-3">
+    <div class="card-body">
+        <h2 class="card-title h5">{{ team.name|default:"Без названия" }}</h2>
+
+        <p class="card-text">
+            Проект: {{ team.project.title|truncatechars:60 }}
+        </p>
+        <p class="card-text">
+            Участников: {{ team.members|length }} из {{ team.MAX_SIZE }}
+            {% include "teams/includes/readiness_badge.html" %}
+        </p>
+
+        <a href="{% url 'teams:detail' team.id %}" class="btn btn-primary">
+            Подробнее
+        </a>
+    </div>
+</article>

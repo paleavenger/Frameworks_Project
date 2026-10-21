@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+
+{% block title %}
+    Главная — Система управления учебными проектными командами
+{% endblock %}
+
+{% block content %}
+    <h1 class="display-5">Система управления учебными проектными командами</h1>
+
+    <p class="lead">
+        Собирайте студентов в проектные команды, назначайте роли и следите
+        за готовностью команд к работе.
+    </p>
+    <p>
+        Студентов: {{ students|length }},
+        команд: {{ teams|length }},
+        проектов: {{ projects|length }}.
+    </p>
+    <p>Основные разделы:</p>
+    <a href="{% url 'students:list' %}" class="btn btn-primary me-2">
+        Студенты
+    </a>
+    <a href="{% url 'teams:list' %}" class="btn btn-primary me-2">
+        Команды
+    </a>
+    <a href="{% url 'projects:list' %}" class="btn btn-secondary">
+        Проекты
+    </a>
+{% endblock %}

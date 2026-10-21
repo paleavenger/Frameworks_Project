@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+
+{% block title %}
+    {% if student %}
+        {{ student.name }} — Система управления учебными проектными командами
+    {% else %}
+        Студент не найден — Система управления учебными проектными командами
+    {% endif %}
+{% endblock %}
+
+{% block content %}
+    {% if student %}
+        <div class="card student-card">
+            <div class="card-body">
+                <h1 class="card-title h3">{{ student.name }}</h1>
+
+                <p class="card-text">
+                    <strong>ID:</strong> {{ student.id }}
+                </p>
+                <p class="card-text">
+                    <strong>Специальность:</strong>
+                    {{ student.specialty|default:"не указана" }}
+                </p>
+                <p class="card-text">
+                    <strong>Команда:</strong>
+                    {% include "students/includes/team_badge.html" %}
+                </p>
+                <p class="card-text">
+                    <strong>Роль:</strong>
+                    {{ role.name|default:"не назначена" }}
+                </p>
+            </div>
+        </div>
+    {% else %}
+        <h1 class="text-danger">Студент не найден</h1>
+        <p>Студент с указанным идентификатором отсутствует.</p>
+    {% endif %}
+
+    <a href="{% url 'students:list' %}"
+       class="btn btn-outline-secondary mt-3">
+        ← к списку студентов
+    </a>
+{% endblock %}

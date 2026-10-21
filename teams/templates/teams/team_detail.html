@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+
+{% block title %}
+    {% if team %}
+        {{ team.name }} — Система управления учебными проектными командами
+    {% else %}
+        Команда не найдена — Система управления учебными проектными командами
+    {% endif %}
+{% endblock %}
+
+{% block content %}
+    {% if team %}
+        <div class="card team-card">
+            <div class="card-body">
+                <h1 class="card-title h3">{{ team.name }}</h1>
+
+                <p class="card-text">
+                    <strong>ID:</strong> {{ team.id }}
+                </p>
+                <p class="card-text">
+                    <strong>Проект:</strong>
+                    <a href="{% url 'projects:detail' team.project.id %}">
+                        {{ team.project.title }}
+                    </a>
+                </p>
+                <p class="card-text">
+                    <strong>Готовность:</strong>
+                    {% include "teams/includes/readiness_badge.html" %}
+                </p>
+                <p class="card-text">
+                    <strong>Участники</strong>
+                    ({{ team.members|length }} из {{ team.MAX_SIZE }}):
+                </p>
+
+                <ul class="list-group">
+                    {% for member in team.members %}
+                        <li class="list-group-item d-flex justify-content-between">
+                            <a href="{% url 'students:detail' member.student.id %}">
+                                {{ member.student.name }}
+                            </a>
+                            <span class="member-role">
+                                {{ member.student.specialty }},
+                                роль: {{ member.role.name|default:"не назначена" }}
+                            </span>
+                        </li>
+                    {% empty %}
+                        <li class="list-group-item">
+                            В команде пока нет участников.
+                        </li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+    {% else %}
+        <h1 class="text-danger">Команда не найдена</h1>
+        <p>Команда с указанным идентификатором отсутствует.</p>
+    {% endif %}
+
+    <a href="{% url 'teams:list' %}" class="btn btn-outline-secondary mt-3">
+        ← к списку команд
+    </a>
+{% endblock %}

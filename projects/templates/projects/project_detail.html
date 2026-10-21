@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+
+{% block title %}
+    {% if project %}
+        {{ project.title }} — Система управления учебными проектными командами
+    {% else %}
+        Проект не найден — Система управления учебными проектными командами
+    {% endif %}
+{% endblock %}
+
+{% block content %}
+    {% if project %}
+        <div class="card project-card">
+            <div class="card-body">
+                <h1 class="card-title h3">{{ project.title }}</h1>
+
+                <p class="card-text">
+                    <strong>ID:</strong> {{ project.id }}
+                </p>
+                <p class="card-text"><strong>Команды:</strong></p>
+
+                <ul class="list-group">
+                    {% for team in teams %}
+                        <li class="list-group-item">
+                            <a href="{% url 'teams:detail' team.id %}">
+                                {{ team.name }}
+                            </a>
+                        </li>
+                    {% empty %}
+                        <li class="list-group-item">
+                            Над проектом никто не работает.
+                        </li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+    {% else %}
+        <h1 class="text-danger">Проект не найден</h1>
+        <p>Проект с указанным идентификатором отсутствует.</p>
+    {% endif %}
+
+    <a href="{% url 'projects:list' %}"
+       class="btn btn-outline-secondary mt-3">
+        ← к списку проектов
+    </a>
+{% endblock %}

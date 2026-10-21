@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+
+{% block title %}
+    Студенты — Система управления учебными проектными командами
+{% endblock %}
+
+{% block content %}
+    <h1>Студенты</h1>
+
+    <p>Всего студентов: {{ entries|length }}</p>
+
+    {% for student, team in entries %}
+        {% include "students/includes/student_card.html" %}
+    {% empty %}
+        <p>Студенты не найдены.</p>
+    {% endfor %}
+{% endblock %}

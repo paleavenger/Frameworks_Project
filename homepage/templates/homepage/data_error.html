@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+
+{% block title %}
+    Ошибка данных — Система управления учебными проектными командами
+{% endblock %}
+
+{% block content %}
+    <h1 class="text-danger">Ошибка данных</h1>
+    <p>{{ error }}</p>
+    <p>Исправьте файлы в каталоге data/ и обновите страницу.</p>
+{% endblock %}

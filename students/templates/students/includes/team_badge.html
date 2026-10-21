@@ -1,0 +1,7 @@
+{% if team %}
+    <a class="badge bg-primary" href="{% url 'teams:detail' team.id %}">
+        {{ team.name }}
+    </a>
+{% else %}
+    <span class="badge bg-secondary">без команды</span>
+{% endif %}

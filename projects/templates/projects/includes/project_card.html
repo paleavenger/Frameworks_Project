@@ -1,0 +1,14 @@
+<article class="card project-card mb-3">
+    <div class="card-body">
+        <h2 class="card-title h5">
+            {{ project.title|default:"Без названия" }}
+        </h2>
+
+        <p class="card-text">Команд: {{ teams_count }}</p>
+
+        <a href="{% url 'projects:detail' project.id %}"
+           class="btn btn-primary">
+            Подробнее
+        </a>
+    </div>
+</article>
