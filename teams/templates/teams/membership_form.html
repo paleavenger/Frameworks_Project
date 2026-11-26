@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+
+{% block title %}{% if membership %}Изменить участие{% else %}Добавить участника{% endif %} — {{ site_name }}{% endblock %}
+
+{% block content %}
+    <h1>{% if membership %}Изменить участие{% else %}Добавить участника{% endif %}</h1>
+    <p>Команда «{{ team.name }}»</p>
+    <form method="post" class="col-lg-6">
+        {% csrf_token %}
+        {% include "includes/form_fields.html" %}
+        <button type="submit" class="btn btn-primary">Сохранить</button>
+        <a href="{{ team.get_absolute_url }}" class="btn btn-outline-secondary">К команде</a>
+    </form>
+{% endblock %}

@@ -7,9 +7,9 @@
 {% block content %}
     <h1>Проекты</h1>
 
-    <p>Всего проектов: {{ entries|length }}</p>
+    <p>Всего проектов: {{ projects|length }}</p>
 
-    {% for project, teams_count in entries %}
+    {% for project in projects %}
         {% include "projects/includes/project_card.html" %}
     {% empty %}
         <p>Проекты не найдены.</p>

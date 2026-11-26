@@ -1,6 +1,8 @@
 from django.apps import AppConfig
 
 
+# ProjectsConfig Настраивает приложение проектов
 class ProjectsConfig(AppConfig):
     default_auto_field = 'django.db.models.BigAutoField'
     name = 'projects'
+    verbose_name = "Проекты"

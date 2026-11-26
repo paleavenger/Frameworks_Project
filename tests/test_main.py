@@ -1,5 +1,3 @@
-"""Тесты пунктов консольного меню."""
-
 import json
 from typing import Any
 
@@ -9,10 +7,9 @@ import main
 from storage import AppData
 
 
+# run Запускает меню с тестовыми ответами
 @pytest.fixture
 def run(monkeypatch, capsys, data_dir):
-    """Запускает меню с заданными ответами и возвращает вывод."""
-
     def runner(*answers: str) -> str:
         replies = iter([*answers, "0"])
         monkeypatch.setattr("builtins.input", lambda prompt="": next(replies))
@@ -22,8 +19,8 @@ def run(monkeypatch, capsys, data_dir):
     return runner
 
 
+# saved Читает сохранённый JSON
 def saved(data_dir, filename: str) -> list[dict[str, Any]]:
-    """Читает сохранённый JSON-файл."""
     return json.loads((data_dir / filename).read_text(encoding="utf-8"))
 
 

@@ -6,3 +6,4 @@ __pycache__/
 *.log
 *.tmp
 db.sqlite3
+/media/

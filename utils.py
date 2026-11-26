@@ -1,13 +1,10 @@
-"""Вспомогательные функции консольного интерфейса."""
-
-
+# same_name Сравнивает имена без учёта регистра и пробелов
 def same_name(first: str, second: str) -> bool:
-    """Сравнивает имена без учёта регистра и крайних пробелов."""
     return first.strip().casefold() == second.strip().casefold()
 
 
+# input_int Запрашивает целое число в диапазоне
 def input_int(prompt: str, minimum: int, maximum: int) -> int:
-    """Запрашивает целое число в заданном диапазоне."""
     while True:
         try:
             value = int(input(prompt))
@@ -18,8 +15,8 @@ def input_int(prompt: str, minimum: int, maximum: int) -> int:
             print("Ошибка: нужно ввести целое число.")
 
 
+# input_non_empty Запрашивает непустую строку
 def input_non_empty(prompt: str) -> str:
-    """Запрашивает непустую строку."""
     while True:
         value = input(prompt).strip()
         if value:

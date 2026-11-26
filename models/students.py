@@ -1,66 +1,60 @@
-"""Класс Student и функции работы с коллекцией студентов."""
-
 from typing import Any
 
 from models.entity import Entity, next_id
 from utils import same_name
 
 
+# Student Хранит имя и специальность студента
 class Student(Entity):
-    """Студент: имя и направление подготовки."""
-
+    # __init__ Задаёт данные студента
     def __init__(self, student_id: int, name: str, specialty: str) -> None:
-        """Создаёт студента."""
         super().__init__(student_id)
         self.name = name
         self.specialty = specialty
 
+    # matches Ищет совпадение по имени или специальности
     def matches(self, query: str) -> bool:
-        """Проверяет, содержит ли имя или специальность строку поиска."""
         query = query.lower()
         return query in self.name.lower() or query in self.specialty.lower()
 
+    # to_dict Возвращает данные студента для JSON
     def to_dict(self) -> dict[str, Any]:
-        """Возвращает данные студента для сохранения в JSON."""
         return {
             "id": self.id,
             "name": self.name,
             "specialty": self.specialty,
         }
 
+    # __str__ Возвращает имя и специальность
     def __str__(self) -> str:
-        """Возвращает строку вида «Анна (аналитика)»."""
         return f"{self.name} ({self.specialty})"
 
 
+# find_student Ищет студента по имени без учёта регистра
 def find_student(students: list[Student], name: str) -> Student | None:
-    """Ищет студента по имени без учёта регистра."""
     for student in students:
         if same_name(student.name, name):
             return student
     return None
 
 
+# find_student_by_id Ищет студента по идентификатору
 def find_student_by_id(
     students: list[Student],
     student_id: int,
 ) -> Student | None:
-    """Ищет студента по идентификатору."""
     for student in students:
         if student.id == student_id:
             return student
     return None
 
 
+# add_student Добавляет студента в список
 def add_student(
     students: list[Student],
     name: str,
     specialty: str,
 ) -> Student | None:
-    """Создаёт студента и добавляет его в коллекцию.
-
-    Возвращает None, если имя пустое или такой студент уже есть.
-    """
     name = name.strip()
     if not name or find_student(students, name) is not None:
         return None
@@ -69,24 +63,24 @@ def add_student(
     return student
 
 
+# remove_student Удаляет студента по имени
 def remove_student(students: list[Student], name: str) -> Student | None:
-    """Удаляет студента из коллекции и возвращает его."""
     student = find_student(students, name)
     if student is not None:
         students.remove(student)
     return student
 
 
+# search_students Ищет студентов по имени или специальности
 def search_students(students: list[Student], query: str) -> list[Student]:
-    """Находит студентов по части имени или специальности."""
     return [student for student in students if student.matches(query)]
 
 
+# filter_students_by_specialty Отбирает студентов по специальности
 def filter_students_by_specialty(
     students: list[Student],
     specialty: str,
 ) -> list[Student]:
-    """Отбирает студентов с указанной специальностью."""
     wanted = specialty.strip().casefold()
     return [
         student
@@ -95,13 +89,13 @@ def filter_students_by_specialty(
     ]
 
 
+# sort_students Сортирует студентов по имени
 def sort_students(students: list[Student]) -> list[Student]:
-    """Сортирует студентов по имени."""
     return sorted(students, key=lambda student: student.name.lower())
 
 
+# student_statistics Считает студентов по специальностям
 def student_statistics(students: list[Student]) -> dict[str, Any]:
-    """Возвращает статистику по специальностям."""
     specialties: dict[str, int] = {}
     for student in students:
         specialties[student.specialty] = (

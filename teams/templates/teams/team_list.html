@@ -7,11 +7,39 @@
 {% block content %}
     <h1>Команды</h1>
 
-    <p>Всего команд: {{ teams|length }}</p>
+    <form method="get" class="row g-2 align-items-end mb-4">
+        {% include "includes/form_fields.html" with field_container_class="col-auto" %}
+        <div class="col-auto">
+            <button type="submit" class="btn btn-primary">Найти</button>
+            <a href="{% url 'teams:list' %}" class="btn btn-outline-secondary">Сбросить</a>
+        </div>
+    </form>
+
+    <p>Всего команд: {{ page_obj.paginator.count }}</p>
+
+    <p>
+        <a href="{% url 'teams:vacancies' %}" class="btn btn-outline-primary">
+            Найти команду со свободными местами
+        </a>
+    </p>
 
     {% for team in teams %}
         {% include "teams/includes/team_card.html" %}
     {% empty %}
         <p>Команды не найдены.</p>
     {% endfor %}
+
+    {% if page_obj.has_other_pages %}
+        <nav aria-label="Страницы списка команд" class="d-flex align-items-center gap-3 mt-4">
+            {% if page_obj.has_previous %}
+                <a href="{% querystring page=page_obj.previous_page_number %}"
+                   class="btn btn-outline-secondary">Назад</a>
+            {% endif %}
+            <span>Страница {{ page_obj.number }} из {{ page_obj.paginator.num_pages }}</span>
+            {% if page_obj.has_next %}
+                <a href="{% querystring page=page_obj.next_page_number %}"
+                   class="btn btn-outline-secondary">Вперёд</a>
+            {% endif %}
+        </nav>
+    {% endif %}
 {% endblock %}

@@ -8,5 +8,7 @@
        href="{% url 'teams:list' %}">Команды</a>
     <a class="nav-link{% if section == 'projects' %} active{% endif %}"
        href="{% url 'projects:list' %}">Проекты</a>
+    <a class="nav-link{% if section == 'stats' %} active{% endif %}"
+       href="{% url 'stats:index' %}">Статистика</a>
 </nav>
 {% endwith %}

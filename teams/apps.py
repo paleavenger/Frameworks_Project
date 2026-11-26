@@ -1,6 +1,8 @@
 from django.apps import AppConfig
 
 
+# TeamsConfig Настраивает приложение команд
 class TeamsConfig(AppConfig):
     default_auto_field = 'django.db.models.BigAutoField'
     name = 'teams'
+    verbose_name = "Команды и роли"

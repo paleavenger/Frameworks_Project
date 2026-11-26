@@ -4,9 +4,9 @@
             {{ project.title|default:"Без названия" }}
         </h2>
 
-        <p class="card-text">Команд: {{ teams_count }}</p>
+        <p class="card-text">Команд: {{ project.teams_count }}</p>
 
-        <a href="{% url 'projects:detail' project.id %}"
+        <a href="{{ project.get_absolute_url }}"
            class="btn btn-primary">
             Подробнее
         </a>

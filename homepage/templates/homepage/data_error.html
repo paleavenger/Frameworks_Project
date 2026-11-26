@@ -7,5 +7,8 @@
 {% block content %}
     <h1 class="text-danger">Ошибка данных</h1>
     <p>{{ error }}</p>
-    <p>Исправьте файлы в каталоге data/ и обновите страницу.</p>
+    <p>
+        Проверьте файл базы данных db.sqlite3 и наличие миграций Django
+        командой <code>python manage.py showmigrations</code>.
+    </p>
 {% endblock %}

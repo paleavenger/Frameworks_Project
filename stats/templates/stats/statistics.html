@@ -1,0 +1,152 @@
+{% extends "base.html" %}
+
+{% block title %}
+    Статистика — Система управления учебными проектными командами
+{% endblock %}
+
+{% block content %}
+    <h1>Статистика</h1>
+
+    <section class="mb-4">
+        <h2 class="h4">Общие показатели</h2>
+        <ul class="list-group">
+            <li class="list-group-item">
+                Студентов: {{ totals.students_count }}
+            </li>
+            <li class="list-group-item">
+                Команд: {{ totals.teams_count }}
+            </li>
+            <li class="list-group-item">
+                Проектов: {{ totals.projects_count }}
+            </li>
+            <li class="list-group-item">
+                Студентов без команды: {{ totals.free_students_count }}
+            </li>
+            <li class="list-group-item">
+                Участников без роли: {{ totals.without_role_count }}
+            </li>
+            <li class="list-group-item">
+                Средний размер команды:
+                {{ totals.avg_team_size|default_if_none:"нет данных" }}
+            </li>
+        </ul>
+    </section>
+
+    <section class="mb-4">
+        <h2 class="h4">Команды по состоянию</h2>
+        <ul class="list-group">
+            {% for label, count in team_status_counts %}
+                <li class="list-group-item">{{ label }}: {{ count }}</li>
+            {% endfor %}
+        </ul>
+    </section>
+
+    <section class="mb-4">
+        <h2 class="h4">Студенты по специальностям</h2>
+        <table class="table table-sm">
+            <thead>
+                <tr><th>Специальность</th><th>Студентов</th></tr>
+            </thead>
+            <tbody>
+                {% for item in by_specialty %}
+                    <tr>
+                        <td>
+                            {{ item.specialty|default:"специальность не указана" }}
+                        </td>
+                        <td>{{ item.students_count }}</td>
+                    </tr>
+                {% empty %}
+                    <tr><td colspan="2">Данные отсутствуют.</td></tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </section>
+
+    <section class="mb-4">
+        <h2 class="h4">Участники по ролям</h2>
+        <table class="table table-sm">
+            <thead>
+                <tr><th>Роль</th><th>Участников</th></tr>
+            </thead>
+            <tbody>
+                {% for item in by_role %}
+                    <tr>
+                        <td>{{ item.name }}</td>
+                        <td>{{ item.members_count }}</td>
+                    </tr>
+                {% empty %}
+                    <tr><td colspan="2">Данные отсутствуют.</td></tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </section>
+
+    <section class="mb-4">
+        <h2 class="h4">
+            Самые готовые команды (первые {{ top_teams_limit }})
+        </h2>
+        <table class="table table-sm">
+            <thead>
+                <tr><th>Команда</th><th>Готовность</th></tr>
+            </thead>
+            <tbody>
+                {% for team in top_teams %}
+                    <tr>
+                        <td>
+                            <a href="{% url 'teams:detail' team.id %}">
+                                {{ team.name }}
+                            </a>
+                        </td>
+                        <td>{{ team.readiness_percent }}%</td>
+                    </tr>
+                {% empty %}
+                    <tr><td colspan="2">Команд пока нет.</td></tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </section>
+
+    <section class="mb-4">
+        <h2 class="h4">Команды, не готовые к работе</h2>
+        <p class="text-muted">
+            В команде меньше {{ min_size }} участников или у кого-то нет роли.
+        </p>
+        <ul class="list-group">
+            {% for team in unready_teams %}
+                <li class="list-group-item">
+                    <a href="{% url 'teams:detail' team.id %}">
+                        {{ team.name }}
+                    </a>:
+                    участников {{ team.members_count }},
+                    с ролью {{ team.roles_count }}
+                </li>
+            {% empty %}
+                <li class="list-group-item">
+                    Все команды готовы к работе.
+                </li>
+            {% endfor %}
+        </ul>
+    </section>
+
+    <section class="mb-4">
+        <h2 class="h4">Проекты с несколькими командами</h2>
+        <p class="text-muted">
+            Проекты, над которыми работает несколько команд
+            (больше {{ busy_project_teams }}).
+        </p>
+        <ul class="list-group">
+            {% for project in busy_projects %}
+                <li class="list-group-item">
+                    <a href="{% url 'projects:detail' project.id %}">
+                        {{ project.title }}
+                    </a>:
+                    команд {{ project.teams_count }}
+                </li>
+            {% empty %}
+                <li class="list-group-item">
+                    Таких проектов пока нет.
+                </li>
+            {% endfor %}
+        </ul>
+    </section>
+{% endblock %}

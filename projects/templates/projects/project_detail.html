@@ -17,6 +17,17 @@
                 <p class="card-text">
                     <strong>ID:</strong> {{ project.id }}
                 </p>
+                {% if project.image %}
+                    <img src="{{ project.image.url }}" alt="{{ project.title }}"
+                         class="img-fluid rounded mb-3">
+                {% endif %}
+                {% if perms.projects.change_project %}
+                    <p><a href="{% url 'projects:image' project.pk %}"
+                          class="btn btn-outline-primary">Изменить изображение</a></p>
+                {% elif not user.is_authenticated %}
+                    <p><a href="{% url 'admin:login' %}{% querystring next=request.path %}"
+                          class="btn btn-outline-secondary">Войти для изменения изображения</a></p>
+                {% endif %}
                 <p class="card-text"><strong>Команды:</strong></p>
 
                 <ul class="list-group">

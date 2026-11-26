@@ -1,6 +1,7 @@
-{% if team %}
-    <a class="badge bg-primary" href="{% url 'teams:detail' team.id %}">
-        {{ team.name }}
+{% if student.membership.team_id %}
+    <a class="badge bg-primary"
+       href="{% url 'teams:detail' student.membership.team_id %}">
+        {{ student.membership.team.name }}
     </a>
 {% else %}
     <span class="badge bg-secondary">без команды</span>

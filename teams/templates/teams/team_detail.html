@@ -19,7 +19,7 @@
                 </p>
                 <p class="card-text">
                     <strong>Проект:</strong>
-                    <a href="{% url 'projects:detail' team.project.id %}">
+                    <a href="{% url 'projects:detail' team.project_id %}">
                         {{ team.project.title }}
                     </a>
                 </p>
@@ -29,19 +29,38 @@
                 </p>
                 <p class="card-text">
                     <strong>Участники</strong>
-                    ({{ team.members|length }} из {{ team.MAX_SIZE }}):
+                    ({{ team.members_count }} из {{ max_size }}):
                 </p>
+                {% if perms.teams.add_membership %}
+                    <a class="btn btn-primary mb-3" href="{% url 'teams:membership_create' team.pk %}">Добавить участника</a>
+                {% elif not user.is_authenticated %}
+                    <a class="btn btn-outline-secondary mb-3" href="{% url 'admin:login' %}{% querystring next=request.path %}">Войти для управления составом</a>
+                {% endif %}
 
                 <ul class="list-group">
-                    {% for member in team.members %}
-                        <li class="list-group-item d-flex justify-content-between">
-                            <a href="{% url 'students:detail' member.student.id %}">
+                    {% for member in members %}
+                        <li class="list-group-item d-flex flex-wrap justify-content-between align-items-center gap-2">
+                            <a href="{% url 'students:detail' member.student_id %}">
                                 {{ member.student.name }}
                             </a>
                             <span class="member-role">
                                 {{ member.student.specialty }},
                                 роль: {{ member.role.name|default:"не назначена" }}
                             </span>
+                            {% if perms.teams.change_membership or perms.teams.delete_membership %}
+                                <div class="d-flex gap-2">
+                                    {% if perms.teams.change_membership %}
+                                        <a href="{% url 'teams:membership_update' team.pk member.pk %}"
+                                           class="btn btn-sm btn-outline-primary">Изменить</a>
+                                    {% endif %}
+                                    {% if perms.teams.delete_membership %}
+                                        <form method="post" action="{% url 'teams:membership_remove' team.pk member.pk %}">
+                                            {% csrf_token %}
+                                            <button class="btn btn-sm btn-outline-danger" type="submit">Удалить из команды</button>
+                                        </form>
+                                    {% endif %}
+                                </div>
+                            {% endif %}
                         </li>
                     {% empty %}
                         <li class="list-group-item">

@@ -7,9 +7,26 @@
 {% block content %}
     <h1>Студенты</h1>
 
-    <p>Всего студентов: {{ entries|length }}</p>
+    <form method="get" class="row g-2 align-items-end mb-4">
+        <div class="col-auto">
+            <label for="student-query" class="form-label">Имя студента</label>
+            <input id="student-query" name="q" class="form-control" value="{{ query }}">
+        </div>
+        <div class="col-auto">
+            <button type="submit" class="btn btn-primary">Найти</button>
+            <a href="{% url 'students:list' %}" class="btn btn-outline-secondary">Сбросить</a>
+        </div>
+    </form>
 
-    {% for student, team in entries %}
+    <p>Всего студентов: {{ students|length }}</p>
+
+    <p>
+        <a href="{% url 'students:free' %}" class="btn btn-outline-primary">
+            Найти студентов без команды
+        </a>
+    </p>
+
+    {% for student in students %}
         {% include "students/includes/student_card.html" %}
     {% empty %}
         <p>Студенты не найдены.</p>

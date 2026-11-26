@@ -12,9 +12,9 @@
         за готовностью команд к работе.
     </p>
     <p>
-        Студентов: {{ students|length }},
-        команд: {{ teams|length }},
-        проектов: {{ projects|length }}.
+        Студентов: {{ counts.students_count }},
+        команд: {{ counts.teams_count }},
+        проектов: {{ counts.projects_count }}.
     </p>
     <p>Основные разделы:</p>
     <a href="{% url 'students:list' %}" class="btn btn-primary me-2">
@@ -23,7 +23,10 @@
     <a href="{% url 'teams:list' %}" class="btn btn-primary me-2">
         Команды
     </a>
-    <a href="{% url 'projects:list' %}" class="btn btn-secondary">
+    <a href="{% url 'projects:list' %}" class="btn btn-secondary me-2">
         Проекты
+    </a>
+    <a href="{% url 'stats:index' %}" class="btn btn-secondary">
+        Статистика
     </a>
 {% endblock %}

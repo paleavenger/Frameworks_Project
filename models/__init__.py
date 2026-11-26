@@ -1,5 +1,3 @@
-"""Модели предметной области: учебные проектные команды."""
-
 from models.entity import Entity
 from models.projects import Project
 from models.roles import Role

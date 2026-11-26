@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+
+{% block title %}
+    Команды со свободными местами — Система управления учебными проектными командами
+{% endblock %}
+
+{% block content %}
+    <h1>Команды со свободными местами</h1>
+
+    <form method="get" class="row g-2 align-items-end mb-4">
+        <div class="col-auto">
+            <label for="places" class="form-label">
+                Нужно мест в команде:
+            </label>
+            <select id="places" name="places" class="form-select">
+                {% for number in places_choices %}
+                    <option value="{{ number }}"
+                            {% if number == places %}selected{% endif %}>
+                        {{ number }}
+                    </option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="col-auto">
+            <button type="submit" class="btn btn-primary">Найти</button>
+        </div>
+    </form>
+
+    <p>
+        Найдено команд, где свободно не менее {{ places }} мест:
+        {{ teams|length }}
+    </p>
+
+    {% for team in teams %}
+        <article class="card team-card mb-3">
+            <div class="card-body">
+                <h2 class="card-title h5">{{ team.name }}</h2>
+                <p class="card-text">
+                    Проект: {{ team.project.title|truncatechars:60 }}
+                </p>
+                <p class="card-text">
+                    Участников: {{ team.members_count }} из {{ max_size }},
+                    свободных мест: {{ team.free_places }}
+                </p>
+                <a href="{% url 'teams:detail' team.id %}"
+                   class="btn btn-primary">
+                    Подробнее
+                </a>
+            </div>
+        </article>
+    {% empty %}
+        <p>Команд с таким числом свободных мест нет.</p>
+    {% endfor %}
+
+    <a href="{% url 'teams:list' %}" class="btn btn-outline-secondary mt-3">
+        ← к списку команд
+    </a>
+{% endblock %}

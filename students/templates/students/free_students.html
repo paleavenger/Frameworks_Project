@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+
+{% block title %}
+    Студенты без команды — Система управления учебными проектными командами
+{% endblock %}
+
+{% block content %}
+    <h1>Студенты без команды</h1>
+
+    <form method="get" class="row g-2 align-items-end mb-4">
+        <div class="col-auto">
+            <label for="specialty" class="form-label">Специальность:</label>
+            <select id="specialty" name="specialty" class="form-select">
+                <option value="">любая</option>
+                {% for item in specialties %}
+                    <option value="{{ item.specialty }}"
+                            {% if item.specialty == specialty %}selected{% endif %}>
+                        {{ item.specialty }}
+                    </option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="col-auto">
+            <button type="submit" class="btn btn-primary">Найти</button>
+        </div>
+    </form>
+
+    {% if specialty %}
+        <h2 class="h5">Специальность: {{ specialty }}</h2>
+    {% endif %}
+    <p>Найдено студентов: {{ students|length }}</p>
+
+    {% for student in students %}
+        <article class="card student-card mb-3">
+            <div class="card-body">
+                <h2 class="card-title h5">{{ student.name }}</h2>
+                <p class="card-text">
+                    {{ student.specialty|default:"специальность не указана" }}
+                </p>
+                <a href="{% url 'students:detail' student.id %}"
+                   class="btn btn-primary">
+                    Подробнее
+                </a>
+            </div>
+        </article>
+    {% empty %}
+        <p>Свободных студентов по выбранным условиям нет.</p>
+    {% endfor %}
+
+    <a href="{% url 'students:list' %}"
+       class="btn btn-outline-secondary mt-3">
+        ← к списку студентов
+    </a>
+{% endblock %}

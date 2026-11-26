@@ -6,7 +6,7 @@
             Проект: {{ team.project.title|truncatechars:60 }}
         </p>
         <p class="card-text">
-            Участников: {{ team.members|length }} из {{ team.MAX_SIZE }}
+            Участников: {{ team.members_count }} из {{ max_size }}
             {% include "teams/includes/readiness_badge.html" %}
         </p>
 

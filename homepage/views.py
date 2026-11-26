@@ -1,22 +1,20 @@
-"""Главная страница и общие функции веб-интерфейса."""
-
 from functools import wraps
 from typing import Callable
 
+from django.db import DatabaseError
 from django.http import HttpRequest, HttpResponse
 from django.shortcuts import render
 
-from storage import AppData, load_data
+from projects.models import Project
+from students.models import Student
+from teams.models import Team
 
 
-def with_data(
+# with_db Обрабатывает ошибки базы данных
+def with_db(
     view: Callable[..., HttpResponse],
 ) -> Callable[..., HttpResponse]:
-    """Декоратор: загружает данные проекта и передаёт их в view-функцию.
-
-    Если файлы данных повреждены, показывает страницу ошибки с кодом 500.
-    """
-
+    # wrapper Вызывает представление с обработкой ошибок базы
     @wraps(view)
     def wrapper(
         request: HttpRequest,
@@ -24,33 +22,32 @@ def with_data(
         **kwargs: object,
     ) -> HttpResponse:
         try:
-            data = load_data()
-        except (RuntimeError, ValueError) as error:
+            return view(request, *args, **kwargs)
+        except DatabaseError as error:
             return render(
                 request,
                 "homepage/data_error.html",
                 {"error": str(error)},
                 status=500,
             )
-        return view(request, data, *args, **kwargs)
 
     return wrapper
 
 
-@with_data
-def index(request: HttpRequest, data: AppData) -> HttpResponse:
-    """Главная страница: описание приложения и переходы к разделам."""
-    context = {
-        "students": data.students,
-        "teams": data.teams,
-        "projects": data.projects,
+# index Показывает главную страницу со сводкой
+@with_db
+def index(request: HttpRequest) -> HttpResponse:
+    counts = {
+        "students_count": Student.objects.count(),
+        "teams_count": Team.objects.count(),
+        "projects_count": Project.objects.count(),
     }
-    return render(request, "homepage/index.html", context)
+    return render(request, "homepage/index.html", {"counts": counts})
 
 
+# page_not_found Показывает страницу 404
 def page_not_found(
     request: HttpRequest,
     exception: Exception,
 ) -> HttpResponse:
-    """Обработчик 404 для любого адреса без маршрута."""
     return render(request, "404.html", status=404)
